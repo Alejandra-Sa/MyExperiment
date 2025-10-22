@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Experimento jsPsych palabra coloreada</title>
+  <title>Experimento jsPsych simple</title>
   <link href="https://unpkg.com/jspsych@8.0.2/css/jspsych.css" rel="stylesheet" />
 </head>
 <body>
@@ -15,21 +15,37 @@
     const jsPsych = initJsPsych({
       display_element: 'jspsych-target',
       on_finish: () => {
-        // Muestra los datos de la respuesta en pantalla o lo puedes enviar a un servidor
+        const csvData = jsPsych.data.get().csv();
+
+        // Mostrar los datos localmente
         jsPsych.data.displayData();
+
+        // Enviar datos al servidor (ajusta la URL)
+        fetch('save_data.php', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({filedata: csvData})
+        })
+        .then(response => {
+          if (!response.ok) {
+            console.error('Error al enviar datos al servidor');
+          } else {
+            console.log('Datos guardados correctamente');
+          }
+        })
+        .catch(error => console.error('Error en fetch:', error));
       }
     });
 
-    // Define un trial con texto que tiene una palabra en rojo usando HTML
-    const palabra_coloreada_trial = {
+    const trial = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: '<p> Negro <span style="color:red;">palabra</span> coloreada.</p>',
-      choices: ['r', 'n', 'a'],  // Opciones de teclas para responder
-      prompt: "<p>Presiona 'r', 'n' o 'a' según sea rojo, negro o azul el color en el que esté escrita la palabra </p>",
+      stimulus: '<p>Esta es una <span style="color:red;">palabra</span> coloreada.</p>',
+      choices: ['f', 'j'],
+      prompt: '<p>Presiona "f" o "j" para responder</p>',
       data: { prueba: 'palabra_coloreada' }
     };
 
-    jsPsych.run([palabra_coloreada_trial]);
+    jsPsych.run([trial]);
   </script>
 </body>
 </html>
