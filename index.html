@@ -1,28 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Experimento jsPsych v8 CDN</title>
+  <title>Experimento jsPsych palabra coloreada</title>
   <link href="https://unpkg.com/jspsych@8.0.2/css/jspsych.css" rel="stylesheet" />
 </head>
 <body>
   <div id="jspsych-target"></div>
 
-  <!-- Carga jsPsych base -->
   <script src="https://unpkg.com/jspsych@8.0.2"></script>
-
-  <!-- Carga el plugin html-keyboard-response -->
   <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
 
   <script>
     const jsPsych = initJsPsych({
       display_element: 'jspsych-target',
-      on_finish: () => jsPsych.data.displayData()
+      on_finish: () => {
+        // Muestra los datos de la respuesta en pantalla o lo puedes enviar a un servidor
+        jsPsych.data.displayData();
+      }
     });
 
-    const bienvenida = {
+    // Define un trial con texto que tiene una palabra en rojo usando HTML
+    const palabra_coloreada_trial = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: 'Le damos la bienvenida al experimento. Presione cualquier tecla para continuar'
+      stimulus: '<p> Negro <span style="color:red;">palabra</span> coloreada.</p>',
+      choices: ['r', 'n', 'a'],  // Opciones de teclas para responder
+      prompt: "<p>Presiona 'r', 'n' o 'a' según sea rojo, negro o azul el color en el que esté escrita la palabra </p>",
+      data: { prueba: 'palabra_coloreada' }
     };
 
-    jsPsych.run([bienvenida]);
+    jsPsych.run([palabra_coloreada_trial]);
   </script>
 </body>
+</html>
