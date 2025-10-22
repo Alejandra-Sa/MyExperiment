@@ -1,0 +1,28 @@
+<head>
+  <meta charset="UTF-8" />
+  <title>Experimento jsPsych v8 CDN</title>
+  <link href="https://unpkg.com/jspsych@8.0.2/css/jspsych.css" rel="stylesheet" />
+</head>
+<body>
+  <div id="jspsych-target"></div>
+
+  <!-- Carga jsPsych base -->
+  <script src="https://unpkg.com/jspsych@8.0.2"></script>
+
+  <!-- Carga el plugin html-keyboard-response -->
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
+
+  <script>
+    const jsPsych = initJsPsych({
+      display_element: 'jspsych-target',
+      on_finish: () => jsPsych.data.displayData()
+    });
+
+    const bienvenida = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: 'Le damos la bienvenida al experimento. Presione cualquier tecla para continuar'
+    };
+
+    jsPsych.run([bienvenida]);
+  </script>
+</body>
